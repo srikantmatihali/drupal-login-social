@@ -170,7 +170,7 @@ function kf_preprocess_page(&$vars) {
   drupal_add_css(path_to_theme(). "/css/nav.css",array('weight' =>3));
   drupal_add_css(path_to_theme(). "/css/kf.css",array('weight' =>4));*/
 
-  $redirectlink = getBaseURL().'ajax/redirect?rbtb='.uniqid();
+  $redirectlink = getBaseURL().'ajax/twitterredirect?rbtb='.uniqid();
   $my_settings = array( 'basePath' => getBaseURL(),'twitterlink'=>$redirectlink);  
   drupal_add_js(array('baseUrl' => $my_settings), 'setting');
   //drupal_add_js(path_to_theme().'/assets/js/logindetails.js',array('weight' =>20));
