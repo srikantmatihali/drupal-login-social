@@ -496,7 +496,7 @@ function twittercallback(){
 
 }//function ends.
 
-function twitterredirect(){ //echo 1; die;  	  
+function twitterredirect(){ echo 1; die;  	  
 	error_reporting(E_ALL); 
 	//ini_set('display_errors',1); test
 
