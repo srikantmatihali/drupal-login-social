@@ -503,7 +503,7 @@ function twitterredirect(){
 	session_start();
 	//drupal_get_path('module', 'twitteroauth');	
 	//require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
-	require_once(drupal_get_path('module', 'twitteroauth').'twitteroauth/twitteroauth.php');
+	require_once(drupal_get_path('module', 'logindetails').'twitteroauth/twitteroauth.php');
 	 echo 1; die; 
 	$connection = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET);
 	$request_token = $connection->getRequestToken(getBaseURL().LOGINDETAILS_OAUTH_CALLBACK);
