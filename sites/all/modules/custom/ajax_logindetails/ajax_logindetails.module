@@ -445,6 +445,8 @@ function twittercallback(){
 			$profile_image = $user_info->profile_image_url;
 			$location = mysql_real_escape_string($user_info->location);
 			
+			print_r($usr_info); 
+
 			//find if user is present in database. If not insert.
 			/*$usertable = "user_mas";		
 			$where = " WHERE tid = '".$uid."'";
