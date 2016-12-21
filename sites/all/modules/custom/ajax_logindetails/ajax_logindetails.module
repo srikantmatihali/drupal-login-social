@@ -427,12 +427,12 @@ function twittercallback(){
 		$access_token = $_SESSION['access_token'];
 		$twitteroauth = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
 		$user_info = $twitteroauth->get('account/verify_credentials');
-		echo '<pre>';print_r($user_info);echo '</pre>'; die;
+		//echo '<pre>';print_r($user_info);echo '</pre>'; die;
 		/* For Testing
 		$tweet_text = 'hello world';
 			 $statues = $twitteroauth->post("statuses/update", array("status" => $tweet_text));  
 		*/	 
-				if (isset($user_info->error)) {
+		if (isset($user_info->error)) {
 			// Something's wrong, go back to square 1  
 			//header('Location: clearsessions.php?rbtb='. uniqid());
 			?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script>
