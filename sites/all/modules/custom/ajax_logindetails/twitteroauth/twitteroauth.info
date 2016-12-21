@@ -1,0 +1,4 @@
+name = Twitter Oauth
+description = An ajax function to create custom user, fb login , gmail
+project = Custom
+core = 7.x

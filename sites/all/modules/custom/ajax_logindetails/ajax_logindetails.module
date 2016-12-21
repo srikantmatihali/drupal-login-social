@@ -1,5 +1,4 @@
 <?php 
-
 define('LOGINDETAILS_CONSUMER_KEY', 'EZoeDKqKXu5N6f18ovDgk43Qi');
 define('LOGINDETAILS_CONSUMER_SECRET', 'uMjqTGc0Z8EQIgFaoZcpEIRS1kM6jH6xu67evvNVT1dimR3SA8');
 define('LOGINDETAILS_OAUTH_CALLBACK', 'ajax/twittercallback');
@@ -122,6 +121,7 @@ function registerUser(){
 		$code=200;
         $errorMsg='Successfully created your account';  
 		$signUpTransaction = db_transaction();
+		$fname = $email = $mobile = $password = '';
 		try{
 			//get all post values.	
 			extract($_POST);
@@ -387,9 +387,9 @@ function updateFromLogin(){
 }
 
 function twittercallback(){
-	if(!isset($_SESSION)){ session_start();} //ini_set('display_errors', 1);
-	require_once('includes/global.php');
-	require_once('twitteroauth/twitteroauth.php');//require_once('includes/config.php');
+	if(!isset($_SESSION)){ session_start();} //ini_set('display_errors', 1);	
+	//require_once('twitteroauth/twitteroauth.php');//require_once('includes/config.php');
+	require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
 
 	if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
 		$_SESSION['status'] = 'expired'; //header('Location: clearsessions.php?rbtb='.uniqid());	
@@ -495,18 +495,15 @@ function twittercallback(){
 
 }//function ends.
 
-function twitterredirect(){
+function twitterredirect(){ //echo 1; die;  	  
 	error_reporting(E_ALL); 
-	//ini_set('display_errors',1);
+	//ini_set('display_errors',1); test
 
 	session_start();
-	require_once('includes/global.php');
-	require_once('twitteroauth/twitteroauth.php');
-	//require_once('includes/config.php');
-
+	//drupal_get_path('module', 'twitteroauth');	
+	require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
 
 	$connection = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET);
-
 	$request_token = $connection->getRequestToken(getBaseURL().LOGINDETAILS_OAUTH_CALLBACK);
 
 	$_SESSION['oauth_token'] = $token = $request_token['oauth_token'];

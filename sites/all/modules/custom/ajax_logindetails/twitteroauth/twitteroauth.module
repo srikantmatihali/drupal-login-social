@@ -27,8 +27,7 @@ function twitteroauth(){
 	 */
 
 	/* Load OAuth lib. You can find it at http://oauth.net */
-	//require_once('OAuth.php');
-	require_once(drupal_get_path('module', 'twitteroauth').'ajax/oauth');
+	require_once('OAuth.php');
 
 	/**
 	 * Twitter OAuth class
