@@ -496,7 +496,7 @@ function twittercallback(){
 
 }//function ends.
 
-function twitterredirect(){ echo 1; die;  	  
+function twitterredirect(){ 	  
 	error_reporting(E_ALL); 
 	//ini_set('display_errors',1); test
 
@@ -504,7 +504,7 @@ function twitterredirect(){ echo 1; die;
 	//drupal_get_path('module', 'twitteroauth');	
 	//require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
 	require_once(drupal_get_path('module', 'twitteroauth').'twitteroauth/twitteroauth.php');
-
+	 echo 1; die; 
 	$connection = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET);
 	$request_token = $connection->getRequestToken(getBaseURL().LOGINDETAILS_OAUTH_CALLBACK);
 
