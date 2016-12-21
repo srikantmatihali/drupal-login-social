@@ -412,6 +412,8 @@ function twittercallback(){
 	if($connection->http_code == 200) {
 		$_SESSION['status'] = 'verified';
 		if( empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
+
+			echo 222;	
 			//header('Location: clearsessions.php?rbtb='.uniqid());
 		    ?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script>
 			<script type="text/javascript">
@@ -420,6 +422,8 @@ function twittercallback(){
 			</script>
 			<?php
 		}
+
+		echo 23234;
 		$access_token = $_SESSION['access_token'];
 		$twitteroauth = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
 		$user_info = $twitteroauth->get('account/verify_credentials');
