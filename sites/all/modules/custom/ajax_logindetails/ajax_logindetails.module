@@ -390,7 +390,7 @@ function twittercallback(){
 	if(!isset($_SESSION)){ session_start();} //ini_set('display_errors', 1);	
 	//require_once('twitteroauth/twitteroauth.php');//require_once('includes/config.php');
 	//require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
-	require_once(drupal_get_path('module', 'twitteroauth').'twitteroauth/twitteroauth.php');
+	require_once(drupal_get_path('module', 'logindetails').'twitteroauth/twitteroauth.php');
 
 	if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
 		$_SESSION['status'] = 'expired'; //header('Location: clearsessions.php?rbtb='.uniqid());	
@@ -504,7 +504,7 @@ function twitterredirect(){
 	//drupal_get_path('module', 'twitteroauth');	
 	//require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
 	require_once(drupal_get_path('module', 'logindetails').'twitteroauth/twitteroauth.php');
-	 echo 1; die; 
+	 
 	$connection = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET);
 	$request_token = $connection->getRequestToken(getBaseURL().LOGINDETAILS_OAUTH_CALLBACK);
 
