@@ -390,7 +390,7 @@ function twittercallback(){
 	if(!isset($_SESSION)){ session_start();} //ini_set('display_errors', 1);	
 	//require_once('twitteroauth/twitteroauth.php');//require_once('includes/config.php');
 	//require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
-	require_once('twitteroauth/twitteroauth.php');
+	drupal_get_path('module', 'logindetails')
 
 	if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
 		$_SESSION['status'] = 'expired'; //header('Location: clearsessions.php?rbtb='.uniqid());	
@@ -446,7 +446,7 @@ function twittercallback(){
 			$location = mysql_real_escape_string($user_info->location);
 			
 			//find if user is present in database. If not insert.
-			$usertable = "user_mas";		
+			/*$usertable = "user_mas";		
 			$where = " WHERE tid = '".$uid."'";
 			$check_user = display_selected($usertable,$where);
 	      	$usid = '';
@@ -488,7 +488,7 @@ function twittercallback(){
 				//}else{
 					//echo "Your account has been banned. Please contact administrator.";
 				//}
-			}//end of user check
+			}//end of user check*/
 		
 		}//end of successfull check.
 		
@@ -503,7 +503,7 @@ function twitterredirect(){ //echo 1; die;
 	session_start();
 	//drupal_get_path('module', 'twitteroauth');	
 	//require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
-	require_once('twitteroauth/twitteroauth.php');
+	require_once(drupal_get_path('module', 'logindetails').'twitteroauth/twitteroauth.php');
 
 	$connection = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET);
 	$request_token = $connection->getRequestToken(getBaseURL().LOGINDETAILS_OAUTH_CALLBACK);
