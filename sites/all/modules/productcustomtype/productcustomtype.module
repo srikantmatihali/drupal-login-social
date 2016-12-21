@@ -1,0 +1,15 @@
+<?php
+/**
+ * Implements hook_node_info()
+ */
+function productcustomtype_node_info() {
+    return array(
+        'product' => array(
+            'name' => t('Product'),
+            'base' => 'product',
+            'description' => t('You can define new Products here'),
+            'has_title' => TRUE,
+            'title_label' => t('Product title')
+         )
+    );
+}

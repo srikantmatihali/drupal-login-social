@@ -1,0 +1,15 @@
+<?php
+/**
+ * Implements hook_uninstall().
+ */
+function productcustomtype_uninstall() {
+    $ournewtype = 'product';
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $ournewtype));
+    $nodeids = array();
+    foreach ($result as $row) {
+        $nodeids[] = $row->nid;
+    }
+    node_delete_multiple($nodeids);
+    node_type_delete($ournewtype);
+}
