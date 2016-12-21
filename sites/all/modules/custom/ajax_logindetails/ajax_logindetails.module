@@ -432,7 +432,7 @@ function twittercallback(){
 		$tweet_text = 'hello world';
 			 $statues = $twitteroauth->post("statuses/update", array("status" => $tweet_text));  
 		*/	 
-		if (isset($user_info->error)) {
+		if (isset($user_info->error)) {  print_r('error');
 			// Something's wrong, go back to square 1  
 			//header('Location: clearsessions.php?rbtb='. uniqid());
 			?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script>
@@ -441,7 +441,8 @@ function twittercallback(){
 					window.opener.test_twitter(); 
 			  </script>
 			<?php 
-		} else {
+		} else { 
+			print_r($user_info);
 			// No Email, So Twitter Username
 			$twitter_username=$user_info->screen_name;
 			$uid = $user_info->id;
