@@ -340,7 +340,7 @@ jQuery( document ).ready(function( $ ) {
 	$(document).on("click", ".twt_login", function(e) {
 		 e.preventDefault();
 		if(tweet_notset===true){
-			var link = '<?php echo BASEURL . 'redirect.php?rbtb='.uniqid(); ?>';
+			var link = Drupal.settings.baseUrl.twitterlink; //'<?php echo BASEURL . 'redirect.php?rbtb='.uniqid(); ?>';
 			var win =  window.open(link, '', 'width=600,height=400,resizable=yes,scrollbars=yes');
 		}		
 		return false;

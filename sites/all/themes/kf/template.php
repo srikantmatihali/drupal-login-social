@@ -169,8 +169,9 @@ function kf_preprocess_page(&$vars) {
   drupal_add_css(path_to_theme(). "/css/owl.carousel.css",array('weight' =>2));
   drupal_add_css(path_to_theme(). "/css/nav.css",array('weight' =>3));
   drupal_add_css(path_to_theme(). "/css/kf.css",array('weight' =>4));*/
-
-  $my_settings = array( 'basePath' => getBaseURL() );
+  
+  $redirectlink = getBaseURL().'redirect.php?rbtb='.uniqid();
+  $my_settings = array( 'basePath' => getBaseURL(),'twitterlink'=>$redirectlink);  
   drupal_add_js(array('baseUrl' => $my_settings), 'setting');
   //drupal_add_js(path_to_theme().'/assets/js/logindetails.js',array('weight' =>20));
 
