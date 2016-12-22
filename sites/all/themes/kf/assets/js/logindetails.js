@@ -346,7 +346,8 @@ jQuery( document ).ready(function( $ ) {
 		return false;
 	});
 
-	function test_twitter() {   
+	function test_twitter() {
+	   	console.log('I am done dude!!');
 		$('.login,.register').hide();
         $('.fbEmailForm').show();
 	    $('.userType').val(2);
