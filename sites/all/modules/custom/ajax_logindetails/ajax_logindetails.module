@@ -302,6 +302,7 @@ function createGenericAccount($id,$name,$loginType){
 				$errorMsg='Logged in successfully';
 				//calling function which is used to insert claimed entry              
 		     }
+		     return array('code'=>$code,'errorMsg'=>$errorMsg);
 			
        // }
 	}catch (Exception $e) {
@@ -313,8 +314,8 @@ function createGenericAccount($id,$name,$loginType){
 		// Log the exception to watchdog.
 		watchdog_exception('users', $e);
 	}
-	echo $code = $returnval['code'];
-	echo $errorMsg = $returnval['errorMsg'];
+	$code = $returnval['code'];
+	$errorMsg = $returnval['errorMsg'];
 	return array('code'=>$code,'errorMsg'=>$errorMsg);
 }
 
