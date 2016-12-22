@@ -220,7 +220,7 @@ function userUpdate(){
 function createGenericAccount($id,$loginType){
 
 	// The transaction opens here.
-	$transaction1235 = db_transaction();
+	$transaction1235 = db_transaction();  
 	try {
 			//snippet to store the right platform id.
 			$fbId = $twitterId = $googleId =  $femail = $phone = ' ';
@@ -329,7 +329,7 @@ function createFBAccount(){
 	$loginType = 1;
 	//get all post values.   	            
 	extract($_POST); 
-	if(!empty($_POST["id"])){ 
+	if(!empty($_POST["id"])){ 		
 		createGenericAccount($id,$loginType);
 	}	
     $response=array('code'=>$code,'msg'=>$errorMsg);
