@@ -324,7 +324,7 @@ function createFBAccount(){
 
 	$code = '500';
 	$errorMsg = 'Data not posted.';
-	$response = array();
+	//$response = array();
 	$loginType = 1;
 	//get all post values.   	            
 	extract($_POST); 
@@ -332,11 +332,14 @@ function createFBAccount(){
 		
 		$returnval = createGenericAccount($id,$name,$loginType);
 		$code = $returnval['code'];
-		$errorMsg = $returnval['errorMsg'];	
+		$errorMsg = $returnval['errorMsg'];
+		$response = array('code'=>$code,'msg'=>$errorMsg);
+		drupal_json_output($response);
+		drupal_exit();	
 	}	
     $response = array('code'=>$code,'msg'=>$errorMsg);
 	drupal_json_output($response);
-	drupal_exit();
+	drupal_exit();   
 }
 
 /*function to check phone and mail.*/
