@@ -457,15 +457,15 @@ function twittercallback(){
 			$loginType = 2;
 			$returnValue = createGenericAccount($uid,$twitter_name,$loginType);
 			$code = $returnval['code'];
-			$errorMsg = $returnval['errorMsg'];				
+			$errorMsg = $returnval['errorMsg'];						
 			
 		}//end of successfull check.
+
+		$response=array('code'=>$code,'msg'=>$errorMsg); 
+		drupal_json_output($response);
+		drupal_exit();
 		
 	}//end of session check.
-
-	$response=array('code'=>$code,'msg'=>$errorMsg); 
-	drupal_json_output($response);
-	drupal_exit();
 }//function ends.
 
 //redirect call function.
