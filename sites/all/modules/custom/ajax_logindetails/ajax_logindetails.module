@@ -462,7 +462,9 @@ function twittercallback(){
 
 			//drupal_add_js(drupal_get_path('theme','kf').'/assets/js/jquery-3.1.1.min.js');
 			?><script type="text/javascript">
+					console.log('i am ');
 					window.close();
+					console.log('here');
 					window.opener.test_twitter(); 
 			 </script><?php
 
