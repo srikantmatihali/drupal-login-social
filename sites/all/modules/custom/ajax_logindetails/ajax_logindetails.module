@@ -219,89 +219,103 @@ function userUpdate(){
 
 function createGenericAccount($id,$name,$loginType){
 
-	//snippet to store the right platform id.
-	$fbId = $twitterId = $googleId =  $femail = $phone = ' ';
-    $username= getPostValue($name);
-	$email= getPostValue($email);
-	$ipAddr = "192.168.1.1"; //getipAddress();
+	$transaction1235 = db_transaction();  
+	try {
+			//$returnval = createGenericAccount($id,$name,$loginType);
+			//snippet to store the right platform id.
+			$fbId = $twitterId = $googleId =  $femail = $phone = ' ';
+		    $username= getPostValue($name);
+			$email= getPostValue($email);
+			$ipAddr = "192.168.1.1"; //getipAddress();
 
-	//query to check this input phone no or email id is exist already or not
-    $db_or = db_or();
+			//query to check this input phone no or email id is exist already or not
+		    $db_or = db_or();
 
+		    $loginType=getPostValue($loginType);
+		    switch ($loginType) {
+		    	case 1: $fbId = getPostValue($id);
+		    			$db_or->condition('p.field_user_fbid_value', $id, '=');
+		    		break;
+		    	case 2: $twitterId = getPostValue($id);
+		    			$db_or->condition('p.field_user_twitterid_value', $id, '=');
+		    		break;
+		    	case 3: $googleId = getPostValue($id);
+		    			$db_or->condition('p.field_user_googleid_value', $id, '=');
+		    		break;	    	
+		    	default: break;
+		    }
+		    
+		    $chkUsrQuery = db_select('users', 'u')->fields('u', array('uid','name'));
+		    $chkUsrQuery->leftJoin('field_data_field_user_fbid','p','p.entity_id = u.uid');
+		    $chkUsrRes=$chkUsrQuery->condition($db_or)->execute()->fetchAll();
 
-    $loginType=getPostValue($loginType);
-    switch ($loginType) {
-    	case 1: $fbId = getPostValue($id);
-    			$db_or->condition('p.field_user_fbid_value', $id, '=');
-    		break;
-    	case 2: $twitterId = getPostValue($id);
-    			$db_or->condition('p.field_user_fbid_value', $id, '=');
-    		break;
-    	case 3: $googleId = getPostValue($id);
-    			$db_or->condition('p.field_user_fbid_value', $id, '=');
-    		break;	
-    	
-    	default: break;
-    }
-    
-    $chkUsrQuery = db_select('users', 'u')->fields('u', array('uid','name'));
-    $chkUsrQuery->leftJoin('field_data_field_user_fbid','p','p.entity_id = u.uid');
-    $chkUsrRes=$chkUsrQuery->condition($db_or)->execute()->fetchAll(); 
+		    if(!empty($chkUsrRes)){ 
 
-    if(!empty($chkUsrRes)){ 
+		    	//snippet to update the email id and phone number.
+		        $cc=array();
+				$cc = $chkUsrRes;
+				foreach ($cc as $vid){
+				   $uid = $vid->uid;
+				}
+				//loads session object.
+				$user_obj = user_load($uid);
+				if($user_obj->mail==""){
+					$code  = 405;
+					$errorMsg='Email Id and Phone number needed'; 
+				}else{
+					$code  = 404;
+					$errorMsg='Log in Successfull'; 
+				}
 
-    	//snippet to update the email id and phone number.
-        $cc=array();
-		$cc = $chkUsrRes;
-		foreach ($cc as $vid){
-		   $uid = $vid->uid;
-		}
-		//loads session object.
-		$user_obj = user_load($uid);
-		if($user_obj->mail==""){
-			$code  = 405;
-			$errorMsg='Email Id and Phone number needed'; 
-		}else{
-			$code  = 404;
-			$errorMsg='Log in Successfull'; 
-		}
+				//session creation function.
+				$form_state = array();
+				$form_state['uid'] = $user_obj->uid;
+				user_login_submit(array(), $form_state);
+		    }else{  
 
-		//session creation function.
-		$form_state = array();
-		$form_state['uid'] = $user_obj->uid;
-		user_login_submit(array(), $form_state);
-    }else{  
-
-    	$phone = '';
-		//$femail = 'srik@srik.in';
-		$newUser = array(
-			'name' => $username,
-			'pass' => '',
-			'mail' => $femail,
-			'status' => 1,
-			'init' => $femail,
-			'field_user_full_name' =>array(LANGUAGE_NONE => array(array('value' => $username))),
-			'field_user_fbid' => array(LANGUAGE_NONE => array(array('value' => $fbId))), 
-			'field_user_googleid' => array(LANGUAGE_NONE => array(array('value' => $googleId))), 
-			'field_user_twitterid' => array(LANGUAGE_NONE => array(array('value' => $twitterId))), 
-			'field_user_ipadress' => array(LANGUAGE_NONE => array(array('value' => $ipAddr))),
-			'field_user_phone' => array(LANGUAGE_NONE => array(array('value' => $phone))),
-			'field_user_logintype' => array(LANGUAGE_NONE => array(array('value' =>$loginType)))
-		); 
-		
-		$res1=user_save(null, $newUser); //null is needed //$res1=user_save($newUser);				
-		
-		//below we saving user profile picture to newly created user data //setting user session
-		$user_obj = user_load($res1->uid);				
-		$form_state = array();
-		$form_state['uid'] = $user_obj->uid;
-		user_login_submit(array(), $form_state);
-		$code  = 405;
-		$emailPhoneStatus = 1;
-		$errorMsg='Logged in successfully';
-		//calling function which is used to insert claimed entry              
-     }
-     return array('code'=>$code,'errorMsg'=>$errorMsg);
+		    	$phone = '';
+				//$femail = 'srik@srik.in';
+				$newUser = array(
+					'name' => $username,
+					'pass' => '',
+					'mail' => $femail,
+					'status' => 1,
+					'init' => $femail,
+					'field_user_full_name' =>array(LANGUAGE_NONE => array(array('value' => $username))),
+					'field_user_fbid' => array(LANGUAGE_NONE => array(array('value' => $fbId))), 
+					'field_user_googleid' => array(LANGUAGE_NONE => array(array('value' => $googleId))), 
+					'field_user_twitterid' => array(LANGUAGE_NONE => array(array('value' => $twitterId))), 
+					'field_user_ipadress' => array(LANGUAGE_NONE => array(array('value' => $ipAddr))),
+					'field_user_phone' => array(LANGUAGE_NONE => array(array('value' => $phone))),
+					'field_user_logintype' => array(LANGUAGE_NONE => array(array('value' =>$loginType)))
+				); 
+				
+				$res1=user_save(null, $newUser); //null is needed //$res1=user_save($newUser);				
+				
+				//below we saving user profile picture to newly created user data //setting user session
+				$user_obj = user_load($res1->uid);				
+				$form_state = array();
+				$form_state['uid'] = $user_obj->uid;
+				user_login_submit(array(), $form_state);
+				$code  = 405;
+				$emailPhoneStatus = 1;
+				$errorMsg='Logged in successfully';
+				//calling function which is used to insert claimed entry              
+		     }
+			
+       // }
+	}catch (Exception $e) {
+		var_dump($e);
+		$code=500;
+		$errorMsg='some error occured while quering db  or  constructing final response ';
+		// Something went wrong somewhere, so roll back now.
+		$transaction1235->rollback();
+		// Log the exception to watchdog.
+		watchdog_exception('users', $e);
+	}
+	$code = $returnval['code'];
+	$errorMsg = $returnval['errorMsg'];
+	return array('code'=>$code,'errorMsg'=>$errorMsg);
 }
 
 
@@ -319,7 +333,7 @@ function createFBAccount(){
 		// The transaction opens here.
 		$transaction1235 = db_transaction();  
 		try {
-				$returnval = createGenericAccount($id,$name,$loginType);
+				//$returnval = createGenericAccount($id,$name,$loginType);
 				$code = $returnval['code'];
 				$errorMsg = $returnval['errorMsg'];
 	       // }
@@ -331,7 +345,11 @@ function createFBAccount(){
 			$transaction1235->rollback();
 			// Log the exception to watchdog.
 			watchdog_exception('users', $e);
-		}		
+		}	
+
+		$returnval = createGenericAccount($id,$name,$loginType);
+		$code = $returnval['code'];
+		$errorMsg = $returnval['errorMsg'];	
 	}	
     $response=array('code'=>$code,'msg'=>$errorMsg);
 	drupal_json_output($response);
@@ -407,7 +425,7 @@ function twittercallback(){
 		$_SESSION['status'] = 'verified';
 		if( empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
 
-			echo 222;	
+			//echo 222;	
 			//header('Location: clearsessions.php?rbtb='.uniqid());
 		    ?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script>
 			<script type="text/javascript">
@@ -442,55 +460,10 @@ function twittercallback(){
 			$uid = $user_info->id;
 			$twitter_name = $user_info->name;
 			$profile_image = $user_info->profile_image_url;
-			//$location = mysql_real_escape_string($user_info->location);
+			$loginType = 2;
+			$returnValue = createGenericAccount($uid,$twitter_name,$loginType);
+			//$location = mysql_real_escape_string($user_info->location);	
 			
-			//drupal code check for twitter id updation or loggin
-
-			//find if user is present in database. If not insert.
-			/*$usertable = "user_mas";		
-			$where = " WHERE tid = '".$uid."'";
-			$check_user = display_selected($usertable,$where);
-	      	$usid = '';
-			if(empty($check_user))
-			{					
-				//register if not present
-				$userstatus = 1;	
-				$userinfo = array("tid" => $uid,"screen_name" =>$twitter_username,"full_name" => $twitter_name,"profile_image" =>"".$profile_image."","location" => $location,"oauth_token" => $access_token['oauth_token'],"oauth_token_secret" =>$access_token['oauth_token_secret'],"created_on" => "".date("Y-m-d H:i:s")."","status"=>1);
-				$usid = insert($userinfo, $usertable); 
-
-				$_SESSION['usid'] = $usid;	//userid from database.
-				$_SESSION['tid'] = $uid; //twitter id	 //$_SESSION['id'] = 1;	//$_SESSION['oauth_id'] = $uid;
-				$_SESSION['username'] = $twitter_username;
-				//$_SESSION['oauth_provider'] = //$userdata['oauth_provider'];
-				?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script>
-				<script type="text/javascript">
-						window.close();
-						window.opener.test_twitter();
-						//window.opener.test_twitter(<?php //echo json_encode($_SESSION['id']); ?>);
-				</script><?php
-				//header("Location: index.php?t=". uniqid());	  		
-			}else{	
-				//print_r($check_user[0]);
-				//if($check_user[0]['status']==1){
-					//echo '<pre>'; print_r($check_user); echo '</pre>';   
-					$usid  = $check_user[0]['id'];
-					$_SESSION['usid'] = $usid;	//userid from database.
-					$_SESSION['tid'] = $uid; //twitter id	 //$_SESSION['oauth_id'] = $access_token['oauth_token'];
-					$_SESSION['username'] = $twitter_username;
-					
-					//header('Location:index.php?page=tweet');
-					
-					?><script type='text/javascript' src="<?php echo getBaseURL();?>js/jquery.min.js"></script>
-					  <script type="text/javascript">
-							window.close();
-							window.opener.test_twitter(); 
-					  </script>
-				    <?php	
-				//}else{
-					//echo "Your account has been banned. Please contact administrator.";
-				//}
-			}//end of user check
-			*/
 		}//end of successfull check.
 		
 	}//end of session check.
