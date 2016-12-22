@@ -78,26 +78,26 @@ function checkUserLogin(){
                 $chkUsrQuery->leftJoin('field_data_field_user_phone','p','p.entity_id = u.uid');
                 $dbResults=$chkUsrQuery->condition($db_or)->execute()->fetchAll();
 				if(!empty($dbResults)){
-						foreach($dbResults as $value){
-							$username=$value->name;
-							//user authentication done by below statement
-							$uid = user_authenticate($username, $password);
-							if(!empty($uid)){
-								//below lines wile set new user sessions
-								$user_obj = user_load($uid);
-								$form_state = array();
-								$form_state['uid'] = $user_obj->uid;
-								user_login_submit(array(), $form_state);
-								$code=200;
-								$errorMsg='Logged in successfully';
-								//calling function which is used to insert claimed entry
-								if(!empty($offerId) && $offerId != 0){}
-							}
-							else{
-								$code=202;
-								$errorMsg=' Wrong Password';
-							}
+					foreach($dbResults as $value){
+						$username=$value->name;
+						//user authentication done by below statement
+						$uid = user_authenticate($username, $password);
+						if(!empty($uid)){
+							//below lines wile set new user sessions
+							$user_obj = user_load($uid);
+							$form_state = array();
+							$form_state['uid'] = $user_obj->uid;
+							user_login_submit(array(), $form_state);
+							$code=200;
+							$errorMsg='Logged in successfully';
+							//calling function which is used to insert claimed entry
+							if(!empty($offerId) && $offerId != 0){}
 						}
+						else{
+							$code=202;
+							$errorMsg=' Wrong Password';
+						}
+					}
 				}else{
 					$code=201;
 					$errorMsg='Failed,Please enter valid email Id and password';
@@ -195,29 +195,6 @@ function registerUser(){
 		drupal_exit();
 }
 
-// logout
-
-	//function is used to claim offer
- function logout(){
-		global $user;
-		try{
-			watchdog('user', 'Session closed for %name.', array('%name' => $user->name));
-			module_invoke_all('user_logout', $user);
-			// Destroy the current session, and reset $user to the anonymous user.
-			//$_GET['destination'] = drupal_get_destination();
-			if(session_destroy()){ 
-				$errorMsg='Successfully logged Out';
-				$code=200;
-			}
-		}catch(Exception $e) {
-		}
-		
-		        $response=array('code'=>$code,'msg'=>$errorMsg);
-				drupal_json_output($response);
-				drupal_exit();
-		
-}
-
 function userUpdate(){
 	 $code = 200;
 	 $errorMsg ="Error";
@@ -239,36 +216,37 @@ function userUpdate(){
 	drupal_exit();	
 }
 
-/*Creates new FB Account.*/
-function createFBAccount(){
+
+function createGenericAccount($id,$loginType){
+
 	// The transaction opens here.
 	$transaction1235 = db_transaction();
 	try {
-         if(!empty($_POST["id"])){      
-         	//get all post values.   	            
-			extract($_POST); //echo "In";//print_r($_POST); die;
-
 			//snippet to store the right platform id.
 			$fbId = $twitterId = $googleId =  $femail = $phone = ' ';
-            $loginType=getPostValue($loginType);
-            switch ($loginType) {
-            	case 1: $fbId = getPostValue($id);
-            		break;
-            	case 2: $twitterId = getPostValue($id);
-            		break;
-            	case 3: $googleId = getPostValue($id);
-            		break;	
-            	
-            	default: break;
-            }
-           
             $username= getPostValue($name);
 			$email= getPostValue($email);
 			$ipAddr = "192.168.1.1"; //getipAddress();
 
 			//query to check this input phone no or email id is exist already or not
             $db_or = db_or();
-            $db_or->condition('p.field_user_fbid_value', $id, '=');
+
+
+            $loginType=getPostValue($loginType);
+            switch ($loginType) {
+            	case 1: $fbId = getPostValue($id);
+            			$db_or->condition('p.field_user_fbid_value', $id, '=');
+            		break;
+            	case 2: $twitterId = getPostValue($id);
+            			$db_or->condition('p.field_user_fbid_value', $id, '=');
+            		break;
+            	case 3: $googleId = getPostValue($id);
+            			$db_or->condition('p.field_user_fbid_value', $id, '=');
+            		break;	
+            	
+            	default: break;
+            }
+            
             $chkUsrQuery = db_select('users', 'u')->fields('u', array('uid','name'));
             $chkUsrQuery->leftJoin('field_data_field_user_fbid','p','p.entity_id = u.uid');
             $chkUsrRes=$chkUsrQuery->condition($db_or)->execute()->fetchAll(); 
@@ -297,11 +275,7 @@ function createFBAccount(){
 				user_login_submit(array(), $form_state);
 		    }else{  
 
-                //inserting new user 
-				if(isset($_POST['phone'])){
-					 $phone=$_POST['phone'];
-				}
-
+		    	$phone = '';
 				//$femail = 'srik@srik.in';
 				$newUser = array(
 					'name' => $username,
@@ -328,10 +302,9 @@ function createFBAccount(){
 				$code  = 405;
 				$emailPhoneStatus = 1;
 				$errorMsg='Logged in successfully';
-				//calling function which is used to insert claimed entry
-              // }
+				//calling function which is used to insert claimed entry              
              }
-        }
+       // }
 	}catch (Exception $e) {
 		var_dump($e);
 		$code=500;
@@ -341,9 +314,27 @@ function createFBAccount(){
 		// Log the exception to watchdog.
 		watchdog_exception('users', $e);
 	}
-        $response=array('code'=>$code,'msg'=>$errorMsg);
-		drupal_json_output($response);
-		drupal_exit();
+	$response=array('code'=>$code,'msg'=>$errorMsg);
+	drupal_json_output($response);
+	drupal_exit();
+}
+
+
+/*Creates new FB Account.*/
+function createFBAccount(){
+
+	$code = '500';
+	$errorMsg = 'Data not posted.';
+	$response = array();
+	$loginType = 1;
+	//get all post values.   	            
+	extract($_POST); 
+	if(!empty($_POST["id"])){ 
+		createGenericAccount($id,$loginType)
+	}	
+    $response=array('code'=>$code,'msg'=>$errorMsg);
+	drupal_json_output($response);
+	drupal_exit();
 }
 
 /*function to check phone and mail.*/
@@ -357,7 +348,8 @@ function checkMailPhoneExists($email, $phone){
 	$chkUsrRes=$chkUsrQuery->condition($db_or)->execute()->rowCount();
     return $chkUsrRes;
 }
-	
+
+//updates mail and phone for facebook, twitter or google plus logins.
 function updateFromLogin(){
 	 $code = 200;
 	 $errorMsg ="Error";
@@ -386,6 +378,7 @@ function updateFromLogin(){
 	drupal_exit();
 }
 
+//twitter callback function.
 function twittercallback(){
 	if(!isset($_SESSION)){ session_start();} //ini_set('display_errors', 1);	
 	//require_once('twitteroauth/twitteroauth.php');//require_once('includes/config.php');
@@ -432,7 +425,7 @@ function twittercallback(){
 		$tweet_text = 'hello world';
 			 $statues = $twitteroauth->post("statuses/update", array("status" => $tweet_text));  
 		*/	 
-		if (isset($user_info->error)) {  print_r('error');
+		if (isset($user_info->error)) {  //print_r('error');
 			// Something's wrong, go back to square 1  
 			//header('Location: clearsessions.php?rbtb='. uniqid());
 			?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script>
@@ -442,14 +435,16 @@ function twittercallback(){
 			  </script>
 			<?php 
 		} else { 
-			print_r($user_info);
+			//print_r($user_info);
 			// No Email, So Twitter Username
 			$twitter_username=$user_info->screen_name;
 			$uid = $user_info->id;
 			$twitter_name = $user_info->name;
 			$profile_image = $user_info->profile_image_url;
-			$location = mysql_real_escape_string($user_info->location);		
+			//$location = mysql_real_escape_string($user_info->location);
 			
+			//drupal code check for twitter id updation or loggin
+
 			//find if user is present in database. If not insert.
 			/*$usertable = "user_mas";		
 			$where = " WHERE tid = '".$uid."'";
@@ -501,6 +496,7 @@ function twittercallback(){
 
 }//function ends.
 
+//redirect call function.
 function twitterredirect(){ 	  
 	error_reporting(E_ALL); 
 	//ini_set('display_errors',1); test
@@ -525,6 +521,26 @@ function twitterredirect(){
 			echo 'Oops! Something went wrong.' . $connection->http_code;
 			break;
 	}
-}
+}//twitter redirect function ends.
 
- ?>
+// logout
+//function is used to claim offer
+function logout(){
+		global $user;
+		try{
+			watchdog('user', 'Session closed for %name.', array('%name' => $user->name));
+			module_invoke_all('user_logout', $user);
+			// Destroy the current session, and reset $user to the anonymous user.
+			//$_GET['destination'] = drupal_get_destination();
+			if(session_destroy()){ 
+				$errorMsg='Successfully logged Out';
+				$code=200;
+			}
+		}catch(Exception $e) {
+		}
+		
+		        $response=array('code'=>$code,'msg'=>$errorMsg);
+				drupal_json_output($response);
+				drupal_exit();
+		
+} ?>
