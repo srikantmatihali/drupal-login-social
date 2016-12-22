@@ -313,8 +313,8 @@ function createGenericAccount($id,$name,$loginType){
 		// Log the exception to watchdog.
 		watchdog_exception('users', $e);
 	}
-	$code = $returnval['code'];
-	$errorMsg = $returnval['errorMsg'];
+	echo $code = $returnval['code'];
+	echo $errorMsg = $returnval['errorMsg'];
 	return array('code'=>$code,'errorMsg'=>$errorMsg);
 }
 
