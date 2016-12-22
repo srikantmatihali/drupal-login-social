@@ -148,7 +148,7 @@ function kf_preprocess_html(&$head_elements){
 }
 
 
-function kf_js_alter(&$js)
+/*function kf_js_alter(&$js)
 {
     $path = drupal_get_path('theme', 'kf');
     unset($js[$path .'/misc/jquery.js?v=1.4.4']);
@@ -159,7 +159,7 @@ function kf_js_alter(&$js)
     $js['misc/jquery.js']['version'] = '3.1.1';
     //unset($js[drupal_get_path('module', 'panels').'/misc/jquery.js']);    
     
-}
+}*/
 
 function kf_preprocess_page(&$vars) {
   
