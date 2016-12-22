@@ -220,118 +220,7 @@ function userUpdate(){
 function createGenericAccount($id,$loginType){
 
 	// The transaction opens here.
-	$transaction1235 = db_transaction();  
-	try {
-			//snippet to store the right platform id.
-			$fbId = $twitterId = $googleId =  $femail = $phone = ' ';
-            $username= getPostValue($name);
-			$email= getPostValue($email);
-			$ipAddr = "192.168.1.1"; //getipAddress();
-
-			//query to check this input phone no or email id is exist already or not
-            $db_or = db_or();
-
-
-            $loginType=getPostValue($loginType);
-            switch ($loginType) {
-            	case 1: $fbId = getPostValue($id);
-            			$db_or->condition('p.field_user_fbid_value', $id, '=');
-            		break;
-            	case 2: $twitterId = getPostValue($id);
-            			$db_or->condition('p.field_user_fbid_value', $id, '=');
-            		break;
-            	case 3: $googleId = getPostValue($id);
-            			$db_or->condition('p.field_user_fbid_value', $id, '=');
-            		break;	
-            	
-            	default: break;
-            }
-            
-            $chkUsrQuery = db_select('users', 'u')->fields('u', array('uid','name'));
-            $chkUsrQuery->leftJoin('field_data_field_user_fbid','p','p.entity_id = u.uid');
-            $chkUsrRes=$chkUsrQuery->condition($db_or)->execute()->fetchAll(); 
-
-		    if(!empty($chkUsrRes)){ 
-
-		    	//snippet to update the email id and phone number.
-		        $cc=array();
-				$cc = $chkUsrRes;
-				foreach ($cc as $vid){
-				   $uid = $vid->uid;
-				}
-				//loads session object.
-				$user_obj = user_load($uid);
-				if($user_obj->mail==""){
-					$code  = 405;
-					$errorMsg='Email Id and Phone number needed'; 
-				}else{
-					$code  = 404;
-					$errorMsg='Log in Successfull'; 
-				}
-
-				//session creation function.
-				$form_state = array();
-				$form_state['uid'] = $user_obj->uid;
-				user_login_submit(array(), $form_state);
-		    }else{  
-
-		    	$phone = '';
-				//$femail = 'srik@srik.in';
-				$newUser = array(
-					'name' => $username,
-					'pass' => '',
-					'mail' => $femail,
-					'status' => 1,
-					'init' => $femail,
-					'field_user_full_name' =>array(LANGUAGE_NONE => array(array('value' => $username))),
-					'field_user_fbid' => array(LANGUAGE_NONE => array(array('value' => $fbId))), 
-					'field_user_googleid' => array(LANGUAGE_NONE => array(array('value' => $googleId))), 
-					'field_user_twitterid' => array(LANGUAGE_NONE => array(array('value' => $twitterId))), 
-					'field_user_ipadress' => array(LANGUAGE_NONE => array(array('value' => $ipAddr))),
-					'field_user_phone' => array(LANGUAGE_NONE => array(array('value' => $phone))),
-					'field_user_logintype' => array(LANGUAGE_NONE => array(array('value' =>$loginType)))
-				); 
-				
-				$res1=user_save(null, $newUser); //null is needed //$res1=user_save($newUser);				
-				
-				//below we saving user profile picture to newly created user data //setting user session
-				$user_obj = user_load($res1->uid);				
-				$form_state = array();
-				$form_state['uid'] = $user_obj->uid;
-				user_login_submit(array(), $form_state);
-				$code  = 405;
-				$emailPhoneStatus = 1;
-				$errorMsg='Logged in successfully';
-				//calling function which is used to insert claimed entry              
-             }
-       // }
-	}catch (Exception $e) {
-		var_dump($e);
-		$code=500;
-		$errorMsg='some error occured while quering db  or  constructing final response ';
-		// Something went wrong somewhere, so roll back now.
-		$transaction1235->rollback();
-		// Log the exception to watchdog.
-		watchdog_exception('users', $e);
-	}
-	$response=array('code'=>$code,'msg'=>$errorMsg);
-	drupal_json_output($response);
-	drupal_exit();
-}
-
-
-/*Creates new FB Account.*/
-function createFBAccount(){
-
-	$code = '500';
-	$errorMsg = 'Data not posted.';
-	$response = array();
-	$loginType = 1;
-	//get all post values.   	            
-	extract($_POST); 
-	if(!empty($_POST["id"])){ 		
-		//createGenericAccount($id,$loginType);
-		// The transaction opens here.
+	// The transaction opens here.
 		$transaction1235 = db_transaction();  
 		try {
 				//snippet to store the right platform id.
@@ -429,9 +318,20 @@ function createFBAccount(){
 		$response=array('code'=>$code,'msg'=>$errorMsg);
 		drupal_json_output($response);
 		drupal_exit();
+}
 
 
-		
+/*Creates new FB Account.*/
+function createFBAccount(){
+
+	$code = '500';
+	$errorMsg = 'Data not posted.';
+	$response = array();
+	$loginType = 1;
+	//get all post values.   	            
+	extract($_POST); 
+	if(!empty($_POST["id"])){ 		
+		createGenericAccount($id,$loginType);
 	}	
     $response=array('code'=>$code,'msg'=>$errorMsg);
 	drupal_json_output($response);
