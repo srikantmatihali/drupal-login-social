@@ -171,14 +171,14 @@
 <script src="<?php echo getBaseURL();?>sites/all/themes/kf/assets/js/logindetails.js" ></script>
 <script>
 console.log('load');
-jQuery( document ).ready(function( $ ) {
+//jQuery( document ).ready(function( $ ) {
 	function test_twitter() {
 	   	//console.log('I am done dude!!');
-		$('.login,.register').hide();
-        $('.fbEmailForm').show();
-	    $('.userType').val(2);
+		jQuery('.login,.register').hide();
+        jQuery('.fbEmailForm').show();
+	    jQuery('.userType').val(2);
 		tweet_notset = false;
 	}	
-});
+//});
 </script>
 <?php //include 'includes/footer.php';?>
