@@ -329,29 +329,12 @@ function createFBAccount(){
 	//get all post values.   	            
 	extract($_POST); 
 	if(!empty($_POST["id"])){ 		
-		//
-		// The transaction opens here.
-		$transaction1235 = db_transaction();  
-		try {
-				//$returnval = createGenericAccount($id,$name,$loginType);
-				$code = $returnval['code'];
-				$errorMsg = $returnval['errorMsg'];
-	       // }
-		}catch (Exception $e) {
-			var_dump($e);
-			$code=500;
-			$errorMsg='some error occured while quering db  or  constructing final response ';
-			// Something went wrong somewhere, so roll back now.
-			$transaction1235->rollback();
-			// Log the exception to watchdog.
-			watchdog_exception('users', $e);
-		}	
-
+		
 		$returnval = createGenericAccount($id,$name,$loginType);
 		$code = $returnval['code'];
 		$errorMsg = $returnval['errorMsg'];	
 	}	
-    $response=array('code'=>$code,'msg'=>$errorMsg);
+    $response = array('code'=>$code,'msg'=>$errorMsg);
 	drupal_json_output($response);
 	drupal_exit();
 }
@@ -399,6 +382,11 @@ function updateFromLogin(){
 
 //twitter callback function.
 function twittercallback(){
+
+	$code = '500';
+	$errorMsg = 'Data not posted.';
+	$response = array();
+
 	if(!isset($_SESSION)){ session_start();} //ini_set('display_errors', 1);	
 	//require_once('twitteroauth/twitteroauth.php');//require_once('includes/config.php');
 	//require_once(drupal_get_path('module', 'twitteroauth').'ajax/twitteroauth');
@@ -444,7 +432,12 @@ function twittercallback(){
 		$tweet_text = 'hello world';
 			 $statues = $twitteroauth->post("statuses/update", array("status" => $tweet_text));  
 		*/	 
-		if (isset($user_info->error)) {  //print_r('error');
+		if (isset($user_info->error)) { 
+
+			$code = '500';
+			$errorMsg = 'Twitter Data Error.';
+				
+		 //print_r('error');
 			// Something's wrong, go back to square 1  
 			//header('Location: clearsessions.php?rbtb='. uniqid());
 			?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script>
@@ -460,14 +453,20 @@ function twittercallback(){
 			$uid = $user_info->id;
 			$twitter_name = $user_info->name;
 			$profile_image = $user_info->profile_image_url;
+			//$location = mysql_real_escape_string($user_info->location);	
+
 			$loginType = 2;
 			$returnValue = createGenericAccount($uid,$twitter_name,$loginType);
-			//$location = mysql_real_escape_string($user_info->location);	
+			$code = $returnval['code'];
+			$errorMsg = $returnval['errorMsg'];				
 			
 		}//end of successfull check.
 		
 	}//end of session check.
 
+	$response=array('code'=>$code,'msg'=>$errorMsg);
+	drupal_json_output($response);
+	drupal_exit();
 }//function ends.
 
 //redirect call function.
