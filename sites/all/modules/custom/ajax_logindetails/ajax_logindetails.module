@@ -467,8 +467,8 @@ function twittercallback(){
 					//console.log('i am ');
 					//window.close();
 					console.log('here');
-					
-					window.opener.test_twitter(); 
+					win.opener.document.write('This is the source window!');
+					window.opener.test_twitter();  
 					parent.window.opener.test_twitter(); 
 			 </script><?php
 
