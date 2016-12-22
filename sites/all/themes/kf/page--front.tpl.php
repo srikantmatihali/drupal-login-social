@@ -172,13 +172,13 @@
 <script>
 console.log('load');
 //jQuery( document ).ready(function( $ ) {
-	function test_twitter() {
+	/*function test_twitter() {
 	   	//console.log('I am done dude!!');
 		jQuery('.login,.register').hide();
         jQuery('.fbEmailForm').show();
 	    jQuery('.userType').val(2);
 		tweet_notset = false;
-	}	
+	}*/	
 //});
 </script>
 <?php //include 'includes/footer.php';?>

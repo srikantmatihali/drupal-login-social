@@ -469,8 +469,9 @@ function twittercallback(){
 					console.log('here');
 					//window.opener.document.write('This is the source window!');
 					window.opener.test_twitter;
-					window.opener.test_twitter();  
-					parent.window.opener.test_twitter(); 
+					window.close();
+					//window.opener.test_twitter();  
+					//parent.window.opener.test_twitter(); 
 			 </script><?php
 
 			//drupal_json_output($response);
