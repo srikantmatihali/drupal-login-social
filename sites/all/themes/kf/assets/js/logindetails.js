@@ -340,17 +340,16 @@ jQuery( document ).ready(function( $ ) {
 	$(document).on("click", ".twt_login", function(e) {
 		 e.preventDefault();
 		if(tweet_notset===true){
-			var link = Drupal.settings.baseUrl.twitterlink; //'<?php echo BASEURL . 'redirect.php?rbtb='.uniqid(); ?>';
+			var link =  Drupal.settings.baseUrl.twitterlink; //'<?php echo BASEURL . 'redirect.php?rbtb='.uniqid(); ?>';
 			var win =  window.open(link, '', 'width=600,height=400,resizable=yes,scrollbars=yes');
 		}		
 		return false;
 	});
 
-	function test_twitter() {
-	   	//console.log('I am done dude!!');
-		$('.login,.register').hide();
-        $('.fbEmailForm').show();
-	    $('.userType').val(2);
+	function test_twitter() {   
+		$('.twt_login').hide();
+		//$('.Login_div').css('display','none');//$('.main_div').show();
+		$('#login_hide').show();
 		tweet_notset = false;
 	}
 
