@@ -423,7 +423,6 @@ function twittercallback(){
 			<?php
 		}
 
-
 		$access_token = $_SESSION['access_token'];
 		$twitteroauth = new TwitterOauth(LOGINDETAILS_CONSUMER_KEY, LOGINDETAILS_CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
 		$user_info = $twitteroauth->get('account/verify_credentials');
@@ -464,7 +463,7 @@ function twittercallback(){
 		
 	}//end of session check.
 
-	$response=array('code'=>$code,'msg'=>$errorMsg);
+	$response=array('code'=>$code,'msg'=>$errorMsg); 
 	drupal_json_output($response);
 	drupal_exit();
 }//function ends.
