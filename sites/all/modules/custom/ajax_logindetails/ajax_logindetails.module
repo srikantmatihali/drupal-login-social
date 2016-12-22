@@ -330,7 +330,7 @@ function createFBAccount(){
 	//get all post values.   	            
 	extract($_POST); 
 	if(!empty($_POST["id"])){ 
-		createGenericAccount($id,$loginType)
+		createGenericAccount($id,$loginType);
 	}	
     $response=array('code'=>$code,'msg'=>$errorMsg);
 	drupal_json_output($response);
