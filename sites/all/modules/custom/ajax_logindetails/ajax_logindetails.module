@@ -230,25 +230,25 @@ function createGenericAccount($id,$name,$loginType){
 
 			//query to check this input phone no or email id is exist already or not
 		    $db_or = db_or();
-
+		    $chkUsrQuery = db_select('users', 'u')->fields('u', array('uid','name'));
 		    $loginType=getPostValue($loginType);
 		    switch ($loginType) {
 		    	case 1: $fbId = getPostValue($id);
 		    			$db_or->condition('p.field_user_fbid_value', $id, '=');
+		    			$chkUsrQuery->leftJoin('field_data_field_user_fbid','p','p.entity_id = u.uid');
 		    		break;
 		    	case 2: $twitterId = getPostValue($id);
 		    			$db_or->condition('p.field_user_twitterid_value', $id, '=');
+		    			$chkUsrQuery->leftJoin('field_data_field_user_twitterid','p','p.entity_id = u.uid');
 		    		break;
 		    	case 3: $googleId = getPostValue($id);
 		    			$db_or->condition('p.field_user_googleid_value', $id, '=');
+		    			$chkUsrQuery->leftJoin('field_data_field_user_googleid','p','p.entity_id = u.uid');
 		    		break;	    	
 		    	default: break;
-		    }
+		    }		    	   
 		    
-		    $chkUsrQuery = db_select('users', 'u')->fields('u', array('uid','name'));
-		    $chkUsrQuery->leftJoin('field_data_field_user_fbid','p','p.entity_id = u.uid');
 		    $chkUsrRes=$chkUsrQuery->condition($db_or)->execute()->fetchAll();
-
 		    if(!empty($chkUsrRes)){ 
 
 		    	//snippet to update the email id and phone number.
