@@ -347,7 +347,7 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 	function test_twitter() {
-	   	console.log('I am done dude!!');
+	   	//console.log('I am done dude!!');
 		$('.login,.register').hide();
         $('.fbEmailForm').show();
 	    $('.userType').val(2);

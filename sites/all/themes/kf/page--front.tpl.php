@@ -169,4 +169,13 @@
 <!--login options-->
 <script src="<?php echo getBaseURL();?>sites/all/themes/kf/assets/js/jquery.validate.min.js" ></script>
 <script src="<?php echo getBaseURL();?>sites/all/themes/kf/assets/js/logindetails.js" ></script>
+<script>
+	function test_twitter() {
+	   	//console.log('I am done dude!!');
+		$('.login,.register').hide();
+        $('.fbEmailForm').show();
+	    $('.userType').val(2);
+		tweet_notset = false;
+	}	
+</script>
 <?php //include 'includes/footer.php';?>
