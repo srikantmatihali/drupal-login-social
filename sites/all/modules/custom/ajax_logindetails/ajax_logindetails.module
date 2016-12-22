@@ -457,14 +457,18 @@ function twittercallback(){
 			$loginType = 2;
 			$returnValue = createGenericAccount($uid,$twitter_name,$loginType);
 			$code = $returnval['code'];
-			$errorMsg = $returnval['errorMsg'];						
-			
-		}//end of successfull check.
+			$errorMsg = $returnval['errorMsg'];	
+			$response=array('code'=>$code,'msg'=>$errorMsg); 
 
-		$response=array('code'=>$code,'msg'=>$errorMsg); 
-		drupal_json_output($response);
-		drupal_exit();
-		
+			?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script><script type="text/javascript">
+					window.close();
+					window.opener.test_twitter(); 
+			 </script><?php
+
+			//drupal_json_output($response);
+			//drupal_exit();
+			
+		}//end of successfull check.		
 	}//end of session check.
 }//function ends.
 

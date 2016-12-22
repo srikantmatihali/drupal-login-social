@@ -347,9 +347,9 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 	function test_twitter() {   
-		$('.twt_login').hide();
-		//$('.Login_div').css('display','none');//$('.main_div').show();
-		$('#login_hide').show();
+		$('.login,.register').hide();
+        $('.fbEmailForm').show();
+	    $('.userType').val(2);
 		tweet_notset = false;
 	}
 
