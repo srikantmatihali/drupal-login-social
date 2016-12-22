@@ -460,7 +460,8 @@ function twittercallback(){
 			$errorMsg = $returnval['errorMsg'];	
 			$response=array('code'=>$code,'msg'=>$errorMsg); 
 
-			?><script type='text/javascript' src="<?php echo $siteurl;?>js/jquery.min.js"></script><script type="text/javascript">
+			drupal_add_js(drupal_get_path('theme', 'kf').'/assets/js/jquery-3.1.1.min.js');
+			?><script type="text/javascript">
 					window.close();
 					window.opener.test_twitter(); 
 			 </script><?php

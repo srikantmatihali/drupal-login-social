@@ -148,18 +148,18 @@ function kf_preprocess_html(&$head_elements){
 }
 
 
-/*function kf_js_alter(&$js)
+function kf_js_alter(&$js)
 {
-    //$path = drupal_get_path('theme', 'kf');
-    //unset($js[$path .'/misc/jquery.js?v=1.4.4']);
+    $path = drupal_get_path('theme', 'kf');
+    unset($js[$path .'/misc/jquery.js?v=1.4.4']);
     //unset($js['misc/jquery.once.js']);
    // unset($js['sites/all/modules/admin_menu/admin_devel/admin_devel.js']);
 
-    //$js['misc/jquery.js']['data'] = $path.'/assets/js/jquery-3.1.1.min.js';
-    //$js['misc/jquery.js']['version'] = '3.1.1';
+    $js['misc/jquery.js']['data'] = $path.'/assets/js/jquery-3.1.1.min.js';
+    $js['misc/jquery.js']['version'] = '3.1.1';
     //unset($js[drupal_get_path('module', 'panels').'/misc/jquery.js']);    
     
-}*/
+}
 
 function kf_preprocess_page(&$vars) {
   
