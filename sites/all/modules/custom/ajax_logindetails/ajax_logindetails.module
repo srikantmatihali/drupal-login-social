@@ -461,7 +461,9 @@ function twittercallback(){
 			$response=array('code'=>$code,'msg'=>$errorMsg); 
 
 			//drupal_add_js(drupal_get_path('theme','kf').'/assets/js/jquery-3.1.1.min.js');
-			?><script type="text/javascript">
+			?>
+			<script type='text/javascript' src="<?php echo drupal_get_path('theme','kf').'/assets/js/jquery-3.1.1.min.js'; ?>"></script>
+			<script type="text/javascript">
 					console.log('i am ');
 					//window.close();
 					console.log('here');
