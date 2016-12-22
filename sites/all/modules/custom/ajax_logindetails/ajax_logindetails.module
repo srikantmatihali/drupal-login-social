@@ -468,7 +468,8 @@ function twittercallback(){
 					//window.close();
 					console.log('here');
 					
-					window.opener.test_twitter(); 
+					//window.opener.test_twitter(); 
+					parent.window.opener.test_twitter(); 
 			 </script><?php
 
 			//drupal_json_output($response);
@@ -480,7 +481,7 @@ function twittercallback(){
 	?><script>
 		//twitter callback code
 		function test_twitter() {   			
-			document.write('enought bro');
+			document.write('enought bro');	
 			$('.login,.register').hide();
 	        $('.fbEmailForm').show();
 		    $('.userType').val(2);
