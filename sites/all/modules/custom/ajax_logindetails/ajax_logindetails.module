@@ -219,11 +219,7 @@ function userUpdate(){
 
 function createGenericAccount($id,$loginType){
 
-	// The transaction opens here.
-	// The transaction opens here.
-		$transaction1235 = db_transaction();  
-		try {
-				//snippet to store the right platform id.
+	//snippet to store the right platform id.
 				$fbId = $twitterId = $googleId =  $femail = $phone = ' ';
 	            $username= getPostValue($name);
 				$email= getPostValue($email);
@@ -305,16 +301,6 @@ function createGenericAccount($id,$loginType){
 					$errorMsg='Logged in successfully';
 					//calling function which is used to insert claimed entry              
 	             }
-	       // }
-		}catch (Exception $e) {
-			var_dump($e);
-			$code=500;
-			$errorMsg='some error occured while quering db  or  constructing final response ';
-			// Something went wrong somewhere, so roll back now.
-			$transaction1235->rollback();
-			// Log the exception to watchdog.
-			watchdog_exception('users', $e);
-		}
 		$response=array('code'=>$code,'msg'=>$errorMsg);
 		drupal_json_output($response);
 		drupal_exit();
@@ -331,7 +317,21 @@ function createFBAccount(){
 	//get all post values.   	            
 	extract($_POST); 
 	if(!empty($_POST["id"])){ 		
-		createGenericAccount($id,$loginType);
+		
+		// The transaction opens here.
+		$transaction1235 = db_transaction();  
+		try {
+				createGenericAccount($id,$loginType);	
+	       // }
+		}catch (Exception $e) {
+			var_dump($e);
+			$code=500;
+			$errorMsg='some error occured while quering db  or  constructing final response ';
+			// Something went wrong somewhere, so roll back now.
+			$transaction1235->rollback();
+			// Log the exception to watchdog.
+			watchdog_exception('users', $e);
+		}		
 	}	
     $response=array('code'=>$code,'msg'=>$errorMsg);
 	drupal_json_output($response);
