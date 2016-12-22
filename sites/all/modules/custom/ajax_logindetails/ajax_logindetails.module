@@ -464,8 +464,8 @@ function twittercallback(){
 			?>
 			<script type='text/javascript' src="<?php echo getBaseURL().'sites/all/themes/kf/assets/js/jquery-3.1.1.min.js'; ?>"></script>
 			<script type="text/javascript">
-					console.log('i am ');
-					//window.close();
+					//console.log('i am ');
+					window.close();
 					console.log('here');
 					document.write('enought bro');
 					window.opener.test_twitter(); 
