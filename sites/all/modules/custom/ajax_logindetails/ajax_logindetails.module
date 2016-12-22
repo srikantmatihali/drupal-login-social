@@ -467,7 +467,7 @@ function twittercallback(){
 					//console.log('i am ');
 					//window.close();
 					console.log('here');
-					document.write('enought bro');
+					
 					window.opener.test_twitter(); 
 			 </script><?php
 
@@ -480,7 +480,7 @@ function twittercallback(){
 	?><script>
 		//twitter callback code
 		function test_twitter() {   			
-			console.log('am here');
+			document.write('enought bro');
 			$('.login,.register').hide();
 	        $('.fbEmailForm').show();
 		    $('.userType').val(2);
