@@ -154,7 +154,7 @@
 									<input class="txt_field uPhone" id="user_number" required type="number" name="user_number">	  								
 								</div>
 								
-								<input type="button" value="Submit" class="update_submit">
+								<input type="submit" value="Submit" class="update_submit">
 							</form>
 							  <p class="uerror_log" style="display:none;"></p>
 						</div>
