@@ -305,7 +305,7 @@ function createGenericAccount($id,$name,$loginType){
 		     return array('code'=>$code,'errorMsg'=>$errorMsg);
 			
        // }
-	}catch (Exception $e) {
+	}catch (Exception $e) { 
 		var_dump($e);
 		$code=500;
 		$errorMsg='some error occured while quering db  or  constructing final response ';
