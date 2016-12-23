@@ -171,7 +171,8 @@ function kf_preprocess_page(&$vars) {
   drupal_add_css(path_to_theme(). "/css/kf.css",array('weight' =>4));*/
 
   $redirectlink = getBaseURL().'ajax/twitterredirect?rbtb='.uniqid();
-  $my_settings = array( 'basePath' => getBaseURL(),'twitterlink'=>$redirectlink);  
+  $facebookid =  '****************'
+  $my_settings = array( 'basePath' => getBaseURL(),'twitterlink'=>$redirectlink,'fbappid'=>$facebookid);  
   drupal_add_js(array('baseUrl' => $my_settings), 'setting');
   //drupal_add_js(path_to_theme().'/assets/js/logindetails.js',array('weight' =>20));
 

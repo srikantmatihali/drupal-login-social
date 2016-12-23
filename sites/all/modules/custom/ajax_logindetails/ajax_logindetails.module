@@ -1,6 +1,6 @@
 <?php 
-define('LOGINDETAILS_CONSUMER_KEY', 'EZoeDKqKXu5N6f18ovDgk43Qi');
-define('LOGINDETAILS_CONSUMER_SECRET', 'uMjqTGc0Z8EQIgFaoZcpEIRS1kM6jH6xu67evvNVT1dimR3SA8');
+define('LOGINDETAILS_CONSUMER_KEY', '*********'); 
+define('LOGINDETAILS_CONSUMER_SECRET', '*******'); 
 define('LOGINDETAILS_OAUTH_CALLBACK', 'ajax/twittercallback');
 
 /*

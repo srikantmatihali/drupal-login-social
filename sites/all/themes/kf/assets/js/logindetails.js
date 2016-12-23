@@ -209,7 +209,7 @@ jQuery( document ).ready(function( $ ) {
 
 	  window.fbAsyncInit = function() {
 	  FB.init({
-	    appId      : '1654697778163319',
+	    appId      : Drupal.settings.baseUrl.fbappid,
 	    cookie     : true,  // enable cookies to allow the server to access 
 	                        // the session
 	    xfbml      : true,  // parse social plugins on this page
